@@ -18,7 +18,7 @@ public class Window extends JFrame {
         this.boardSection = new Board(20, 20, width - 20, height - 20, 4);
         this.boardSection.setMidlineOffset(200);
         getContentPane().add(this.boardSection);
-        // getContentPane().addMouseListener(new PlayerEventListener());
+        
 
     }
 

@@ -1,32 +1,32 @@
-import javax.swing.JLabel;
-
 import java.awt.*;
 
 public class Move {
-    // sectionIndicator is the number that the move object will use to indicate a
+    // occupiedSpaceIndicator is the number that the move object will use to
+    // indicate a
     // move made.
-    protected int sectionIndicator;
+    protected int occupiedSpaceIndicator;
 
-    String symbol;
+    String name;
     Board board;
-    Color labelColor = Color.BLACK;
+    private Sprite playerSprite = null;
 
-    public Move(Board board, String symbol) {
+    public Move(Board board, String name) {
         this.board = board;
-        this.symbol = symbol;
+        this.name = name;
 
     }
 
-    public void setColor(Color color) {
-        this.labelColor = color;
+    public void setMoveSprite(Sprite playerSprite) {
+        this.playerSprite = playerSprite;
     }
 
-    public void setSectionIndicator(int sectionIndicator) {
-        this.sectionIndicator = sectionIndicator;
+    public void setOccupiedSpaceIndicator(int occupiedSpaceIndicator) {
+        this.occupiedSpaceIndicator = occupiedSpaceIndicator;
     }
 
     private boolean isInline(int cell1, int cell2, int cell3) {
-        if (cell1 == this.sectionIndicator && cell2 == this.sectionIndicator && cell3 == this.sectionIndicator) {
+        if (cell1 == this.occupiedSpaceIndicator && cell2 == this.occupiedSpaceIndicator
+                && cell3 == this.occupiedSpaceIndicator) {
             return true;
         }
         return false;
@@ -72,20 +72,18 @@ public class Move {
         return false;
     }
 
-    public void draw() {
-        // Repaint the board to make sure the moves are drawn properly
-        this.board.repaint();
+    public void draw(Graphics g) {
         for (int sectionIndex = 0; sectionIndex < BoardCoordinates.sectionCheck.length; sectionIndex++) {
-            if (BoardCoordinates.sectionCheck[sectionIndex] == this.sectionIndicator) {
-                JLabel moveLabel;
-                moveLabel = new JLabel(this.symbol);
-                moveLabel.setBounds(BoardCoordinates.moveDrawingpositions[sectionIndex][0],
-                        BoardCoordinates.moveDrawingpositions[sectionIndex][1], 150, 140);
-                moveLabel.setFont(new Font("Sans-Serif", Font.PLAIN, 150));
-                moveLabel.setForeground(this.labelColor);
-                this.board.add(moveLabel);
+            if (BoardCoordinates.sectionCheck[sectionIndex] == this.occupiedSpaceIndicator) {
 
+                int xPos = BoardCoordinates.moveDrawingpositions[sectionIndex][0];
+                int yPos = BoardCoordinates.moveDrawingpositions[sectionIndex][1] + 20;
+
+                this.playerSprite.setPosition(xPos, yPos);
+                this.playerSprite.paintComponent(g);
             }
         }
+
     }
+
 }

@@ -3,13 +3,11 @@ import java.awt.event.*;
 import javax.swing.JOptionPane;
 
 public class PlayerEventListener extends MouseAdapter {
-    Player player;
-    RandomAI randomAI = null;
-    DefensiveAI defensiveAI = null;
-    Board board;
+    private RandomAI randomAI = null;
+    private DefensiveAI defensiveAI = null;
+    private Board board;
 
-    public PlayerEventListener(Player player, Board board) {
-        this.player = player;
+    public PlayerEventListener(Board board) {
         this.board = board;
     }
 
@@ -31,16 +29,18 @@ public class PlayerEventListener extends MouseAdapter {
         int clickIndex = checkClickPosition(e.getX(), e.getY());
 
         if (this.randomAI == null) {
-            playWithDefensiveAI(clickIndex, this.player, this.defensiveAI);
+
+            playWithAI(clickIndex, this.board.getPlayer(), this.defensiveAI);
 
         } else {
-            playWithRandomAI(clickIndex, this.player, this.randomAI);
+
+            playWithAI(clickIndex, this.board.getPlayer(), this.randomAI);
         }
 
     }
 
-    private void playWithDefensiveAI(int clickIndex, Player player, DefensiveAI defensiveAI) {
-        if (canMakeMove(clickIndex, player, defensiveAI)) {
+    private void playWithAI(int clickIndex, Player player, RandomAI ai) {
+        if (canMakeMove(clickIndex, player, ai)) {
 
             player.makeMove(clickIndex);
 
@@ -50,10 +50,8 @@ public class PlayerEventListener extends MouseAdapter {
             }
 
             else if (BoardCoordinates.remainingMoves > 1) {
-                defensiveAI.makeMove();
-
-                if (defensiveAI.hasWon()) {
-
+                ai.makeMove();
+                if (ai.hasWon()) {
                     JOptionPane.showMessageDialog(null, player.name + " Loses!", "Game over",
                             JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -61,29 +59,41 @@ public class PlayerEventListener extends MouseAdapter {
                 JOptionPane.showMessageDialog(null, "It's a Tie!", "Game over", JOptionPane.INFORMATION_MESSAGE);
             }
         }
-
     }
 
-    private void playWithRandomAI(int clickIndex, Player player, RandomAI randomAI) {
-        if (canMakeMove(clickIndex, player, randomAI)) {
+    private void playWithAI(int clickIndex, Player player, DefensiveAI ai) {
+        if (canMakeMove(clickIndex, player, ai)) {
 
             player.makeMove(clickIndex);
 
-            if (BoardCoordinates.remainingMoves > 1) {
-                randomAI.makeMove();
+            if (player.hasWon()) {
+                JOptionPane.showMessageDialog(null, player.name + " Wins!", "Game over",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+
+            else if (BoardCoordinates.remainingMoves > 1) {
+                ai.makeMove();
+                if (ai.hasWon()) {
+                    JOptionPane.showMessageDialog(null, player.name + " Loses!", "Game over",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "It's a Tie!", "Game over", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
 
     private boolean canMakeMove(int clickIndex, Player player, RandomAI randomAI) {
-        return BoardCoordinates.sectionCheck[clickIndex] == BoardCoordinates.defaultSectionIndicator && !player.hasWon()
-                && !randomAI.hasWon() && !Move.hasTied(player.hasWon(), randomAI.hasWon());
+        return BoardCoordinates.sectionCheck[clickIndex] == BoardCoordinates.emptySpaceIndicator && !player.hasWon()
+                && !randomAI.hasWon()
+                && !Move.hasTied(player.hasWon(), randomAI.hasWon() && BoardCoordinates.remainingMoves > 0);
     }
 
     // Overload
     private boolean canMakeMove(int clickIndex, Player player, DefensiveAI defensiveAI) {
-        return BoardCoordinates.sectionCheck[clickIndex] == BoardCoordinates.defaultSectionIndicator && !player.hasWon()
-                && !defensiveAI.hasWon() && !Move.hasTied(player.hasWon(), defensiveAI.hasWon());
+        return BoardCoordinates.sectionCheck[clickIndex] == BoardCoordinates.emptySpaceIndicator && !player.hasWon()
+                && !defensiveAI.hasWon()
+                && !Move.hasTied(player.hasWon(), defensiveAI.hasWon() && BoardCoordinates.remainingMoves > 0);
     }
 
     private int checkClickPosition(int x, int y) {

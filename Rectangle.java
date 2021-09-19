@@ -6,11 +6,14 @@ public class Rectangle extends JComponent {
     int x, y, width, height, thickness = 1;
     Color borderColor = Color.BLACK, fillColor = Color.WHITE;
 
-    public Rectangle(int x, int y, int width, int height) {
-        this.x = x;
-        this.y = y;
+    public Rectangle(int width, int height) {
         this.width = width;
         this.height = height;
+    }
+
+    public void setPosition(int x, int y){
+        this.x = x;
+        this.y = y;
     }
 
     public void setRectColor(Color borderColor, Color fillColor) {

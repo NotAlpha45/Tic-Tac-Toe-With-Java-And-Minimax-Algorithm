@@ -1,16 +1,17 @@
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
-import javax.swing.JComponent;
 import java.awt.*;
 import java.awt.event.*;
 
-public class Theme extends JComponent implements ActionListener {
-    private JRadioButton themeButton;
-    Color backgroundColor, borderColor, textColor, textBackgroundColor;
-    private int x, y, width, height;
-    private String themeName;
-    private boolean isDefault = false;
-    private Board board;
+public class Theme implements ActionListener {
+
+    protected JRadioButton themeButton;
+    protected Color backgroundColor, borderColor;
+    protected int x, y, width, height;
+    protected String themeName;
+    protected boolean isDefault = false;
+    protected Board board;
+    private Sprite player1Sprite, player2Sprite;
 
     public Theme(String themeName, Board board) {
         this.themeName = themeName;
@@ -35,29 +36,39 @@ public class Theme extends JComponent implements ActionListener {
         this.board.add(this.themeButton);
         this.themeButton.addActionListener(this);
     }
-    
-    public void applyCustomColor(Color backgroundColor, Color borderColor, Color textColor, Color textBgColor) {
-        this.themeButton.setForeground(textColor);
-        this.themeButton.setBackground(textBgColor);
-        this.board.setBackgroundColor(backgroundColor);
-        this.board.setBorderColor(borderColor);
-        this.board.setTextColor(textColor);
+
+    public void setPlayerSprite(String player1SpriteLocation, String player2SpriteLocation) {
+        this.player1Sprite = new Sprite(player1SpriteLocation);
+        this.player2Sprite = new Sprite(player2SpriteLocation);
+        this.board.getPlayer().setMoveSprite(this.player1Sprite);
+        this.board.getRandomAI().setMoveSprite(this.player2Sprite);
+        this.board.getDefensiveAI().setMoveSprite(this.player2Sprite);
     }
 
-    public void setDefaultColor(Color backgroundColor, Color borderColor, Color textColor, Color textBgColor) {
+    public void applyCustomColor(Color backgroundColor, Color borderColor) {
+        this.themeButton.setForeground(borderColor);
+        this.themeButton.setBackground(backgroundColor);
+        this.board.setBackgroundColor(backgroundColor);
+        this.board.setBorderColor(borderColor);
+
+        this.board.repaint();
+    }
+
+    public void setDefaultColor(Color backgroundColor, Color borderColor) {
         this.backgroundColor = backgroundColor;
         this.borderColor = borderColor;
-        this.textColor = textColor;
-        this.textBackgroundColor = textBgColor;
-
     }
 
     public void actionPerformed(ActionEvent action) {
-        applyCustomColor(this.backgroundColor, this.borderColor, this.textColor, this.textBackgroundColor);
-        board.repaint();
+
+        applyCustomColor(this.backgroundColor, this.borderColor);
+        this.board.getPlayer().setMoveSprite(this.player1Sprite);
+        this.board.getRandomAI().setMoveSprite(this.player2Sprite);
+        this.board.getDefensiveAI().setMoveSprite(this.player2Sprite);
     }
 
     public void addInGroup(ButtonGroup group) {
         group.add(this.themeButton);
     }
+
 }

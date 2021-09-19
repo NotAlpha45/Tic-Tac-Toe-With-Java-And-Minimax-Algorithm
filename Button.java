@@ -23,7 +23,7 @@ public class Button extends JComponent implements ActionListener {
         this.isEnabled = isEnabled;
         this.button.setEnabled(this.isEnabled);
     }
-
+    
     public void setFont(String fontName, int fontSize, int fontType) {
         this.button.setFont(new Font(fontName, fontType, fontSize));
     }
@@ -47,7 +47,12 @@ public class Button extends JComponent implements ActionListener {
 
     // Action for buttonpress.
     public void actionPerformed(ActionEvent action) {
-        System.out.println(action.getActionCommand());
+
+        if (action.getActionCommand() == this.board.getRandomAI().name) {
+            this.board.getEventHandler().setRandomAI(this.board.getRandomAI());
+        } else if (action.getActionCommand() == this.board.getDefensiveAI().name) {
+            this.board.getEventHandler().setDefensiveAI(this.board.getDefensiveAI());
+        }
     }
 
     public void addInGroup(ButtonGroup group) {

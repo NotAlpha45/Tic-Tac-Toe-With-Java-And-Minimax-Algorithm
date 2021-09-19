@@ -1,83 +1,116 @@
 public class DefensiveAI extends Move {
     Player opponent;
-    private int winScore = 1, tieScore = 0, loseScore = -1;
-    private final int INITIAL_BEST_SCORE = 2;
 
-    public DefensiveAI(Board board, String symbol, Player opponent) {
-        super(board, symbol);
+    public DefensiveAI(Board board, String name, Player opponent) {
+        super(board, name);
         this.opponent = opponent;
     }
 
     public void makeMove() {
-        BoardCoordinates.remainingMoves--;
-        int movePosition = 0;
-        int bestScore = -INITIAL_BEST_SCORE;
-        for (int checkIndex = 0; checkIndex < BoardCoordinates.sectionCheck.length; checkIndex++) {
-            if (BoardCoordinates.sectionCheck[checkIndex] == BoardCoordinates.defaultSectionIndicator) {
 
-                BoardCoordinates.sectionCheck[checkIndex] = this.sectionIndicator;
-                
-                // Calculate opponent's move first (which is a minimizing move) and then make
-                // a move. The fist depth is 0.
-                int currentScore = calculateBestMove(0, false);
-
-                // Revert board back to original upon calculating move.
-                BoardCoordinates.sectionCheck[checkIndex] = BoardCoordinates.defaultSectionIndicator;
-
-                if (currentScore > bestScore) {
-                    bestScore = currentScore;
-                    movePosition = checkIndex;
-                }
-            }
-        }
-        BoardCoordinates.sectionCheck[movePosition] = this.sectionIndicator;
-        draw();
-    }
-
-    private int calculateBestMove(int calculationDepth, boolean isMaximizingTurn) {
-
-        // If a winning move is found
-        if (this.hasWon()) {
-            return this.winScore;
-        }
-        if (this.opponent.hasWon()) {
-            return this.loseScore;
-        }
-        // If a draw move is found
-        if (Move.hasTied(this.hasWon(), this.opponent.hasWon())) {
-            return this.tieScore;
+        BoardCoordinates.remainingMoves --;
+        // If any two consecutive position is occupied by the opponent, make move in the
+        // next consecutive position. Otherwise, make a random move.
+        int movePosition;
+        if (BoardCoordinates.sectionCheck[0] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[1] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[2] == BoardCoordinates.emptySpaceIndicator) {
+            movePosition = 2;
         }
 
-        if (isMaximizingTurn) {
+        else if (BoardCoordinates.sectionCheck[1] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[2] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[0] == BoardCoordinates.emptySpaceIndicator) {
+            movePosition = 0;
+        }
 
-            int bestScore = this.INITIAL_BEST_SCORE;
-            for (int checkIndex = 0; checkIndex < BoardCoordinates.sectionCheck.length; checkIndex++) {
-                if (BoardCoordinates.sectionCheck[checkIndex] == BoardCoordinates.defaultSectionIndicator) {
+        else if (BoardCoordinates.sectionCheck[3] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[4] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[5] == BoardCoordinates.emptySpaceIndicator) {
+            movePosition = 5;
+        }
 
-                    BoardCoordinates.sectionCheck[checkIndex] = this.sectionIndicator;
-                    int currentScore = calculateBestMove(calculationDepth + 1, false);
-                    BoardCoordinates.sectionCheck[checkIndex] = BoardCoordinates.defaultSectionIndicator;
+        else if (BoardCoordinates.sectionCheck[4] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[5] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[3] == BoardCoordinates.emptySpaceIndicator) {
+            movePosition = 3;
+        }
 
-                    bestScore = Math.max(bestScore, currentScore);
-                }
-            }
-            return bestScore;
+        else if (BoardCoordinates.sectionCheck[6] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[7] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[8] == BoardCoordinates.emptySpaceIndicator) {
+            movePosition = 8;
+        }
 
+        else if (BoardCoordinates.sectionCheck[7] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[8] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[6] == BoardCoordinates.emptySpaceIndicator) {
+            movePosition = 6;
+        }
+
+        else if (BoardCoordinates.sectionCheck[0] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[3] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[6] == BoardCoordinates.emptySpaceIndicator) {
+            movePosition = 6;
+        }
+
+        else if (BoardCoordinates.sectionCheck[3] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[6] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[0] == BoardCoordinates.emptySpaceIndicator) {
+            movePosition = 0;
+        }
+
+        else if (BoardCoordinates.sectionCheck[1] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[4] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[7] == BoardCoordinates.emptySpaceIndicator) {
+            movePosition = 7;
+        }
+
+        else if (BoardCoordinates.sectionCheck[7] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[4] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[1] == BoardCoordinates.emptySpaceIndicator) {
+            movePosition = 1;
+        }
+
+        else if (BoardCoordinates.sectionCheck[2] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[5] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[8] == BoardCoordinates.emptySpaceIndicator) {
+            movePosition = 8;
+        }
+
+        else if (BoardCoordinates.sectionCheck[5] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[8] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[2] == BoardCoordinates.emptySpaceIndicator) {
+            movePosition = 2;
+        }
+
+        else if (BoardCoordinates.sectionCheck[0] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[4] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[8] == BoardCoordinates.emptySpaceIndicator) {
+            movePosition = 8;
+        }
+
+        else if (BoardCoordinates.sectionCheck[8] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[4] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[0] == BoardCoordinates.emptySpaceIndicator) {
+            movePosition = 0;
+        }
+
+        else if (BoardCoordinates.sectionCheck[2] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[4] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[6] == BoardCoordinates.emptySpaceIndicator) {
+            movePosition = 6;
+        }
+
+        else if (BoardCoordinates.sectionCheck[6] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[4] == this.opponent.occupiedSpaceIndicator
+                && BoardCoordinates.sectionCheck[2] == BoardCoordinates.emptySpaceIndicator) {
+            movePosition = 2;
         } else {
-
-            int bestScore = this.INITIAL_BEST_SCORE;
-            for (int checkIndex = 0; checkIndex < BoardCoordinates.sectionCheck.length; checkIndex++) {
-                if (BoardCoordinates.sectionCheck[checkIndex] == BoardCoordinates.defaultSectionIndicator) {
-
-                    BoardCoordinates.sectionCheck[checkIndex] = this.opponent.sectionIndicator;
-                    int currentScore = calculateBestMove(calculationDepth + 1, true);
-                    BoardCoordinates.sectionCheck[checkIndex] = BoardCoordinates.defaultSectionIndicator;
-
-                    bestScore = Math.min(bestScore, currentScore);
-
-                }
-            }
-            return bestScore;
+            BoardCoordinates.selectRandomSpace(this.occupiedSpaceIndicator);
+            return;
         }
+        BoardCoordinates.sectionCheck[movePosition] = this.occupiedSpaceIndicator;
     }
+
 }
