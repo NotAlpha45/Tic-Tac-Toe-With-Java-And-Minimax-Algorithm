@@ -5,12 +5,12 @@ import java.awt.event.*;
 
 public class Theme implements ActionListener {
 
-    protected JRadioButton themeButton;
-    protected Color backgroundColor, borderColor;
-    protected int x, y, width, height;
-    protected String themeName;
-    protected boolean isDefault = false;
-    protected Board board;
+    private JRadioButton themeButton;
+    private Color backgroundColor, borderColor;
+    private int x, y, width, height;
+    private String themeName;
+    private boolean isDefault = false;
+    private Board board;
     private Sprite player1Sprite, player2Sprite;
 
     public Theme(String themeName, Board board) {

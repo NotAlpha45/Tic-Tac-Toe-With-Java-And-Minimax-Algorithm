@@ -11,13 +11,10 @@ public class Sprite extends JComponent {
 
     public Sprite(String location) {
         try {
-            try {
-                this.sprite = ImageIO.read(new File(getClass().getResource(location).toURI()));
-            } catch (URISyntaxException e) {
 
-                e.printStackTrace();
-            }
-        } catch (IOException e) {
+            this.sprite = ImageIO.read(new File(getClass().getResource(location).toURI()));
+
+        } catch (IOException | URISyntaxException e) {
 
             e.printStackTrace();
         }
@@ -35,6 +32,6 @@ public class Sprite extends JComponent {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(this.sprite, x, y, this.width, this.height, this);
+        g.drawImage(this.sprite, this.x, this.y, this.width, this.height, this);
     }
 }

@@ -5,11 +5,11 @@ import java.awt.*;
  * Window class
  */
 public class Window extends JFrame {
-   
+
     private Board boardSection;
 
     public Window(int width, int height, String title) {
-        
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(width, height);
         // How much the display panel will open on app launch
@@ -18,12 +18,7 @@ public class Window extends JFrame {
         this.boardSection = new Board(20, 20, width - 20, height - 20, 4);
         this.boardSection.setMidlineOffset(200);
         getContentPane().add(this.boardSection);
-        
 
-    }
-
-    public Board getBoardSection() {
-        return this.boardSection;
     }
 
     public void displayWindow(boolean visibility) {

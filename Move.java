@@ -1,6 +1,7 @@
 import java.awt.*;
 
 public class Move {
+
     // occupiedSpaceIndicator is the number that the move object will use to
     // indicate a
     // move made.
@@ -24,43 +25,17 @@ public class Move {
         this.occupiedSpaceIndicator = occupiedSpaceIndicator;
     }
 
-    private boolean isInline(int cell1, int cell2, int cell3) {
-        if (cell1 == this.occupiedSpaceIndicator && cell2 == this.occupiedSpaceIndicator
-                && cell3 == this.occupiedSpaceIndicator) {
-            return true;
-        }
-        return false;
-
-    }
-
     public boolean hasWon() {
-        // The six straight lines
-        if (isInline(BoardCoordinates.sectionCheck[0], BoardCoordinates.sectionCheck[1],
-                BoardCoordinates.sectionCheck[2])) {
-            return true;
-        } else if (isInline(BoardCoordinates.sectionCheck[3], BoardCoordinates.sectionCheck[4],
-                BoardCoordinates.sectionCheck[5])) {
-            return true;
-        } else if (isInline(BoardCoordinates.sectionCheck[6], BoardCoordinates.sectionCheck[7],
-                BoardCoordinates.sectionCheck[8])) {
-            return true;
-        } else if (isInline(BoardCoordinates.sectionCheck[0], BoardCoordinates.sectionCheck[3],
-                BoardCoordinates.sectionCheck[6])) {
-            return true;
-        } else if (isInline(BoardCoordinates.sectionCheck[1], BoardCoordinates.sectionCheck[4],
-                BoardCoordinates.sectionCheck[7])) {
-            return true;
-        } else if (isInline(BoardCoordinates.sectionCheck[2], BoardCoordinates.sectionCheck[5],
-                BoardCoordinates.sectionCheck[8])) {
-            return true;
-        }
-        // The two crosslines
-        else if (isInline(BoardCoordinates.sectionCheck[0], BoardCoordinates.sectionCheck[4],
-                BoardCoordinates.sectionCheck[8])) {
-            return true;
-        } else if (isInline(BoardCoordinates.sectionCheck[2], BoardCoordinates.sectionCheck[4],
-                BoardCoordinates.sectionCheck[6])) {
-            return true;
+        for (int moveSection = 0; moveSection < BoardCoordinates.inlineSectionIndexes.length; moveSection++) {
+            int firstSectionIndex = BoardCoordinates.inlineSectionIndexes[moveSection][0];
+            int secondSectionIndex = BoardCoordinates.inlineSectionIndexes[moveSection][1];
+            int thirdSectionIndex = BoardCoordinates.inlineSectionIndexes[moveSection][2];
+            // If an inline section is occupied by the player, then he has won.
+            if (BoardCoordinates.sectionCheck[firstSectionIndex] == this.occupiedSpaceIndicator
+                    && BoardCoordinates.sectionCheck[secondSectionIndex] == this.occupiedSpaceIndicator
+                    && BoardCoordinates.sectionCheck[thirdSectionIndex] == this.occupiedSpaceIndicator) {
+                return true;
+            }
         }
         return false;
     }

@@ -1,4 +1,4 @@
-package Test;
+package test;
 
 import org.junit.jupiter.api.Test;
 
@@ -19,12 +19,12 @@ public class MoveTest {
     }
 
     @Test
-    void testSetColor() {
+    void testSetMoveSprite() {
 
     }
 
     @Test
-    void testSetSectionIndicator() {
+    void testSetOccupiedSpaceIndicator() {
 
     }
 }

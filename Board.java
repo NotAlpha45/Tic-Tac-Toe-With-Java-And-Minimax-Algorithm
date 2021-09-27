@@ -5,7 +5,7 @@ import javax.swing.JLabel;
 
 public class Board extends JComponent {
     private int x, y, width, height, thickness, midLineOffset = 0;
-    Color borderColor = Color.BLACK, backgroundColor = Color.WHITE;
+    private Color borderColor = Color.BLACK, backgroundColor = Color.WHITE;
     private ButtonGroup themeGroup = new ButtonGroup(), aiGroup = new ButtonGroup();
     private JLabel themeLabel;
     private Button randomAIButton, defensiveAIButton;
@@ -59,28 +59,28 @@ public class Board extends JComponent {
 
     private void addComponents() {
 
-        themeClassic = new Theme("Classic", this);
-        themeClassic.setDefaultState(true);
-        themeClassic.positionButton(600, 100, 100, 40);
-        themeClassic.setFont("SansSerif", 20, Font.PLAIN);
-        themeClassic.setDefaultColor(Color.WHITE, Color.BLACK);
+        this.themeClassic = new Theme("Classic", this);
+        this.themeClassic.setDefaultState(true);
+        this.themeClassic.positionButton(600, 100, 100, 40);
+        this.themeClassic.setFont("SansSerif", 20, Font.PLAIN);
+        this.themeClassic.setDefaultColor(Color.WHITE, Color.BLACK);
 
-        themeClassic.addInGroup(themeGroup);
+        this.themeClassic.addInGroup(themeGroup);
 
-        themeForest = new Theme("Forest", this);
-        themeForest.setDefaultState(false);
-        themeForest.positionButton(600, 140, 100, 40);
-        themeForest.setFont("SansSerif", 20, Font.PLAIN);
-        themeForest.setDefaultColor(new Color(75, 219, 39), new Color(31, 89, 16));
-        themeForest.addInGroup(themeGroup);
+        this.themeForest = new Theme("Forest", this);
+        this.themeForest.setDefaultState(false);
+        this.themeForest.positionButton(600, 140, 100, 40);
+        this.themeForest.setFont("SansSerif", 20, Font.PLAIN);
+        this.themeForest.setDefaultColor(new Color(75, 219, 39), new Color(31, 89, 16));
+        this.themeForest.addInGroup(themeGroup);
 
-        themeHighContrast = new Theme("High Contrast", this);
-        themeHighContrast.setDefaultState(false);
-        themeHighContrast.positionButton(600, 180, 160, 40);
-        themeHighContrast.setFont("SansSerif", 20, Font.PLAIN);
-        themeHighContrast.setDefaultColor(Color.DARK_GRAY, Color.LIGHT_GRAY);
+        this.themeHighContrast = new Theme("High Contrast", this);
+        this.themeHighContrast.setDefaultState(false);
+        this.themeHighContrast.positionButton(600, 180, 160, 40);
+        this.themeHighContrast.setFont("SansSerif", 20, Font.PLAIN);
+        this.themeHighContrast.setDefaultColor(Color.DARK_GRAY, Color.LIGHT_GRAY);
 
-        themeHighContrast.addInGroup(themeGroup);
+        this.themeHighContrast.addInGroup(themeGroup);
 
         this.randomAIButton = new Button(this.randomAI.name, this);
         this.randomAIButton.positionButton(600, 280, 160, 50);
@@ -101,9 +101,9 @@ public class Board extends JComponent {
 
         add(themeLabel);
 
-        themeForest.setPlayerSprite("assets/spriteApple.png", "assets/spriteBanana.png");
-        themeHighContrast.setPlayerSprite("assets/spriteWhiteRectangle.png", "assets/spriteBlackRectangle.png");
-        themeClassic.setPlayerSprite("assets/spriteX.png", "assets/spriteO.png");
+        this.themeForest.setPlayerSprite("assets/spriteApple.png", "assets/spriteBanana.png");
+        this.themeHighContrast.setPlayerSprite("assets/spriteWhiteRectangle.png", "assets/spriteBlackRectangle.png");
+        this.themeClassic.setPlayerSprite("assets/spriteX.png", "assets/spriteO.png");
 
     }
 
@@ -114,7 +114,7 @@ public class Board extends JComponent {
         this.randomAI = new RandomAI(this, "Random AI");
         this.randomAI.setOccupiedSpaceIndicator(2);
 
-        this.defensiveAI = new DefensiveAI(this, "Defensive AI", player1);
+        this.defensiveAI = new DefensiveAI(this, "Defensive AI");
         this.defensiveAI.setOccupiedSpaceIndicator(2);
 
         this.eventHandler = new PlayerEventListener(this);
